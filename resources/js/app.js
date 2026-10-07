@@ -21,4 +21,9 @@ window.addEventListener('load', function () {
             }
         });
     }
+
+    const heroVideo = document.getElementById('hero-bg-video');
+    if (heroVideo) {
+        heroVideo.playbackRate = 0.65;
+    }
 });

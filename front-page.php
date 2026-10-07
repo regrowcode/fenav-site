@@ -6,19 +6,45 @@ get_header(); ?>
 
 <!-- 1. HERO SECTION INSTITUCIONAL -->
 <section class="relative bg-dark text-white py-28 md:py-40 px-4 md:px-6 overflow-hidden">
+    <!-- Video de Background -->
+    <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <video 
+            id="hero-bg-video"
+            class="w-full h-full object-cover opacity-35"
+            autoplay 
+            muted 
+            loop 
+            playsinline>
+            <source src="<?php echo esc_url(get_template_directory_uri() . '/video/avivamiento-fuego.mp4'); ?>" type="video/mp4">
+        </video>
+        <!-- Capa oscura semitransparente para preservar la legibilidad -->
+        <div class="absolute inset-0 bg-dark/60"></div>
+    </div>
+    <script>
+        (function() {
+            var v = document.getElementById('hero-bg-video');
+            if (v) {
+                var setSpeed = function() { v.playbackRate = 0.65; };
+                setSpeed();
+                v.addEventListener('loadedmetadata', setSpeed);
+                v.addEventListener('play', setSpeed);
+            }
+        })();
+    </script>
+
     <!-- Efecto de iluminación y textura CSS nativa de alta gama -->
-    <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute inset-0 pointer-events-none z-0">
         <div class="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]"></div>
         <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-yellow-600/10 rounded-full blur-[100px]"></div>
         <div class="absolute inset-0 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:40px_40px] opacity-[0.07]"></div>
     </div>
     
     <!-- Gradiente de profundidad superior e inferior -->
-    <div class="absolute inset-0 bg-gradient-to-b from-dark/95 via-transparent to-dark pointer-events-none"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-dark/95 via-transparent to-dark pointer-events-none z-0"></div>
     
     <!-- Líneas doradas con resplandor sutil -->
-    <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent"></div>
-    <div class="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
+    <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent z-10"></div>
+    <div class="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent z-10"></div>
 
     <div class="container mx-auto relative z-10 text-center max-w-5xl">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900/90 border border-primary/30 text-primary text-xs font-bold uppercase tracking-widest mb-8">
