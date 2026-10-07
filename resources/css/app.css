@@ -1,0 +1,66 @@
+@import 'tailwindcss';
+@import './theme.css';
+@import './utilities.css';
+@import './custom.css' layer(utilities);
+
+/* Configuración de paleta y tipografía FENAV para Tailwind v4 */
+@theme {
+    --color-primary: #D4AF37; /* Dorado oficial del logo FENAV */
+    --color-dark: #0A0A0A;    /* Negro oficial del logo FENAV */
+    --color-light: #F4F4F4;
+    --color-muted: #4A4A4A;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+@source '../../vendor/tailpress/framework/**/*.php';
+@source '../../vendor/tailpress/framework/**/**/*.php';
+
+@utility container {
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-zinc-200, currentColor);
+  }
+}
+
+/* Estilos para el mapa institucional */
+#mapa-venezuela svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+#mapa-venezuela path {
+    fill: #f3f4f6;
+    stroke: #d1d5db;
+    stroke-width: 2;
+    transition: all 0.3s ease;
+}
+
+#mapa-venezuela path.active {
+    fill: #d4af37 !important;
+    stroke: #000;
+}
+
+#mapa-venezuela path:hover {
+    fill: #000;
+    cursor: pointer;
+}
+
+.pagination a, .pagination span {
+    @apply px-4 py-2 mx-1 bg-white border border-gray-300 rounded text-dark hover:bg-primary transition-colors;
+}
+.pagination .current {
+    @apply bg-primary font-bold text-dark;
+}
