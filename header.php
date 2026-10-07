@@ -24,31 +24,55 @@
                 <img src="<?php echo get_template_directory_uri(); ?>/images/logo-fenav-preview.png" alt="FENAV" class="h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
             </a>
 
-            <!-- Navegación Escritorio -->
-            <nav id="primary-navigation" class="hidden md:flex items-center space-x-1 lg:space-x-2">
-                <?php
-                if ( has_nav_menu('primary') ) {
-                    wp_nav_menu([
-                        'theme_location'  => 'primary',
-                        'container'       => false,
-                        'menu_class'      => 'flex items-center space-x-6 lg:space-x-8 font-semibold uppercase text-xs tracking-wider',
-                        'fallback_cb'     => false,
-                    ]);
-                } else {
-                    echo '<a href="' . admin_url('nav-menus.php') . '" class="text-primary text-xs hover:underline uppercase tracking-wider">Crear menú en WordPress</a>';
-                }
-                ?>
-            </nav>
+            <!-- Navegación y Selector de Idioma en Escritorio -->
+            <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                <nav id="primary-navigation" class="flex items-center space-x-1 lg:space-x-2">
+                    <?php
+                    if ( has_nav_menu('primary') ) {
+                        wp_nav_menu([
+                            'theme_location'  => 'primary',
+                            'container'       => false,
+                            'menu_class'      => 'flex items-center space-x-6 lg:space-x-8 font-semibold uppercase text-xs tracking-wider',
+                            'fallback_cb'     => false,
+                        ]);
+                    } else {
+                        $nav_home = __t('Inicio', 'Home', 'Início');
+                        $nav_about = __t('Nosotros', 'About Us', 'Sobre Nós');
+                        $nav_dept = __t('Departamentos', 'Departments', 'Departamentos');
+                        $nav_churches = __t('Iglesias Afiliadas', 'Affiliated Churches', 'Igrejas Afiliadas');
+                        $nav_press = __t('Sala de Prensa', 'Press Room', 'Sala de Imprensa');
+                        echo '<ul class="flex items-center space-x-6 font-semibold uppercase text-xs tracking-wider">
+                            <li><a href="' . esc_url(home_url('/')) . '" class="text-white hover:text-primary transition-colors">' . $nav_home . '</a></li>
+                            <li><a href="' . esc_url(home_url('/nosotros')) . '" class="text-white hover:text-primary transition-colors">' . $nav_about . '</a></li>
+                            <li><a href="' . esc_url(home_url('/departamentos')) . '" class="text-white hover:text-primary transition-colors">' . $nav_dept . '</a></li>
+                            <li><a href="' . esc_url(home_url('/iglesias-afiliadas')) . '" class="text-white hover:text-primary transition-colors">' . $nav_churches . '</a></li>
+                            <li><a href="' . esc_url(home_url('/sala-de-prensa')) . '" class="text-white hover:text-primary transition-colors">' . $nav_press . '</a></li>
+                        </ul>';
+                    }
+                    ?>
+                </nav>
 
-            <!-- Botón Móvil -->
-            <button id="primary-menu-toggle" type="button" aria-expanded="false" aria-label="Abrir menú" class="md:hidden text-white hover:text-primary p-2 rounded-lg border border-zinc-800 hover:border-primary/40 transition-colors focus:outline-none">
-                <svg class="w-6 h-6 menu-open-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-                <svg class="w-6 h-6 menu-close-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+                <!-- Selector de Idioma (ES, EN, PT) -->
+                <?php if (function_exists('fenav_language_switcher')) {
+                    fenav_language_switcher(false);
+                } ?>
+            </div>
+
+            <!-- Controles Móviles: Selector de Idioma + Botón Hamburguesa -->
+            <div class="flex items-center gap-3 md:hidden">
+                <?php if (function_exists('fenav_language_switcher')) {
+                    fenav_language_switcher(false);
+                } ?>
+
+                <button id="primary-menu-toggle" type="button" aria-expanded="false" aria-label="Abrir menú" class="text-white hover:text-primary p-2 rounded-lg border border-zinc-800 hover:border-primary/40 transition-colors focus:outline-none">
+                    <svg class="w-6 h-6 menu-open-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="w-6 h-6 menu-close-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- Contenedor Menú Móvil desplegable -->
@@ -62,9 +86,23 @@
                     'fallback_cb'     => false,
                 ]);
             } else {
-                echo '<a href="' . admin_url('nav-menus.php') . '" class="text-primary text-sm hover:underline uppercase tracking-wider">Crear menú en WordPress</a>';
+                $nav_home = __t('Inicio', 'Home', 'Início');
+                $nav_about = __t('Nosotros', 'About Us', 'Sobre Nós');
+                $nav_dept = __t('Departamentos', 'Departments', 'Departamentos');
+                $nav_churches = __t('Iglesias Afiliadas', 'Affiliated Churches', 'Igrejas Afiliadas');
+                $nav_press = __t('Sala de Prensa', 'Press Room', 'Sala de Imprensa');
+                echo '<ul class="flex flex-col space-y-4 font-semibold uppercase text-sm tracking-wider">
+                    <li><a href="' . esc_url(home_url('/')) . '" class="text-white hover:text-primary transition-colors">' . $nav_home . '</a></li>
+                    <li><a href="' . esc_url(home_url('/nosotros')) . '" class="text-white hover:text-primary transition-colors">' . $nav_about . '</a></li>
+                    <li><a href="' . esc_url(home_url('/departamentos')) . '" class="text-white hover:text-primary transition-colors">' . $nav_dept . '</a></li>
+                    <li><a href="' . esc_url(home_url('/iglesias-afiliadas')) . '" class="text-white hover:text-primary transition-colors">' . $nav_churches . '</a></li>
+                    <li><a href="' . esc_url(home_url('/sala-de-prensa')) . '" class="text-white hover:text-primary transition-colors">' . $nav_press . '</a></li>
+                </ul>';
             }
             ?>
+            <?php if (function_exists('fenav_language_switcher')) {
+                fenav_language_switcher(true);
+            } ?>
         </div>
     </header>
 

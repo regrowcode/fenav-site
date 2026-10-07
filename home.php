@@ -15,13 +15,17 @@ get_header(); ?>
     <div class="container mx-auto px-4 md:px-6 text-center max-w-4xl relative z-10">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900/80 border border-primary/30 text-primary text-xs font-bold uppercase tracking-widest mb-6">
             <span class="w-2 h-2 rounded-full bg-primary"></span>
-            Comunicación Oficial
+            <?php echo __t('Comunicación Oficial', 'Official Communications', 'Comunicação Oficial'); ?>
         </div>
         <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
-            Sala de <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-200 to-primary">Prensa</span>
+            <?php echo __t('Sala de', 'Press', 'Sala de'); ?> <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-200 to-primary"><?php echo __t('Prensa', 'Room', 'Imprensa'); ?></span>
         </h1>
         <p class="text-base md:text-xl text-gray-300 font-light max-w-2xl mx-auto">
-            Comunicados oficiales, jornadas ministeriales, eventos y noticias del avivamiento en Venezuela.
+            <?php echo __t(
+                'Comunicados oficiales, jornadas ministeriales, eventos y noticias del avivamiento en Venezuela.',
+                'Official communiqués, ministerial missions, events, and revival news in Venezuela.',
+                'Comunicados oficiais, jornadas ministeriais, eventos e notícias do avivamento na Venezuela.'
+            ); ?>
         </p>
     </div>
 </section>
@@ -45,7 +49,9 @@ get_header(); ?>
                             <?php else : ?>
                                 <div class="h-44 bg-zinc-950 flex items-center justify-center p-6 relative border-b border-primary/20">
                                     <div class="text-center">
-                                        <span class="inline-block px-3 py-1 rounded-full bg-zinc-900 border border-primary/30 text-primary text-[10px] uppercase font-bold tracking-widest">FENAV Prensa</span>
+                                        <span class="inline-block px-3 py-1 rounded-full bg-zinc-900 border border-primary/30 text-primary text-[10px] uppercase font-bold tracking-widest">
+                                            <?php echo __t('FENAV Prensa', 'FENAV Press', 'FENAV Imprensa'); ?>
+                                        </span>
                                     </div>
                                 </div>
                             <?php endif; ?>
@@ -66,7 +72,7 @@ get_header(); ?>
 
                         <div class="px-7 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
                             <a href="<?php the_permalink(); ?>" class="text-primary font-extrabold text-xs uppercase tracking-wider inline-flex items-center gap-1.5 hover:gap-2.5 transition-all">
-                                Leer comunicado 
+                                <?php echo __t('Leer comunicado', 'Read article', 'Ler comunicado'); ?>
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                             </a>
                         </div>
@@ -84,8 +90,16 @@ get_header(); ?>
                 <div class="w-16 h-16 rounded-2xl bg-amber-500/10 text-primary flex items-center justify-center mx-auto mb-4">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
                 </div>
-                <h3 class="text-xl font-bold text-dark mb-2">Próximamente más publicaciones</h3>
-                <p class="text-muted text-sm">Actualmente estamos redactando los próximos comunicados y crónicas de eventos de la federación.</p>
+                <h3 class="text-xl font-bold text-dark mb-2">
+                    <?php echo __t('Próximamente más publicaciones', 'More articles coming soon', 'Em breve novas publicações'); ?>
+                </h3>
+                <p class="text-muted text-sm">
+                    <?php echo __t(
+                        'Actualmente estamos redactando los próximos comunicados y crónicas de eventos de la federación.',
+                        'We are currently preparing upcoming press releases and federation event reports.',
+                        'Atualmente estamos redigindo os próximos comunicados e notícias de eventos da federação.'
+                    ); ?>
+                </p>
             </div>
         <?php endif; ?>
 

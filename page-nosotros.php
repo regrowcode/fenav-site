@@ -6,7 +6,6 @@ get_header(); ?>
 
 <!-- 1. HERO SECTION - NOSOTROS -->
 <section class="relative bg-dark text-white py-24 md:py-32 border-b border-primary/30 overflow-hidden">
-    <!-- Luces y malla abstracta de fondo -->
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute -top-32 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
         <div class="absolute -bottom-32 left-10 w-96 h-96 bg-yellow-600/10 rounded-full blur-3xl"></div>
@@ -16,13 +15,17 @@ get_header(); ?>
     <div class="container mx-auto px-4 md:px-6 text-center max-w-4xl relative z-10">
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900/80 border border-primary/30 text-primary text-xs font-bold uppercase tracking-widest mb-6">
             <span class="w-2 h-2 rounded-full bg-primary"></span>
-            Historia • Propósito • Fundamentos
+            <?php echo __t('Historia • Propósito • Fundamentos', 'History • Purpose • Foundations', 'História • Propósito • Fundamentos'); ?>
         </div>
         <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
-            Nuestra <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-200 to-primary">Identidad</span>
+            <?php echo __t('Nuestra', 'Our', 'Nossa'); ?> <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-200 to-primary"><?php echo __t('Identidad', 'Identity', 'Identidade'); ?></span>
         </h1>
         <p class="text-base md:text-xl text-gray-300 leading-relaxed font-light max-w-2xl mx-auto">
-            Conoce los orígenes, los valores y el compromiso que impulsan a la Federación Nacional de Avivamiento a servir a las iglesias de Venezuela.
+            <?php echo __t(
+                'Conoce los orígenes, los valores y el compromiso que impulsan a la Federación Nacional de Avivamiento a servir a las iglesias de Venezuela.',
+                'Discover the origins, values, and commitment that drive the National Revival Federation to serve the churches of Venezuela.',
+                'Conheça as origens, os valores e o compromisso que impulsionam a Federação Nacional de Avivamento a servir às igrejas da Venezuela.'
+            ); ?>
         </p>
     </div>
 </section>
@@ -30,11 +33,19 @@ get_header(); ?>
 <!-- 2. SECCIÓN: QUIÉNES SOMOS -->
 <section class="py-20 bg-white px-4 md:px-6">
     <div class="container mx-auto max-w-4xl text-center">
-        <span class="text-primary font-bold text-xs uppercase tracking-[0.3em] block mb-2">Fundamento</span>
-        <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-6 tracking-tight">¿Quiénes Somos?</h2>
+        <span class="text-primary font-bold text-xs uppercase tracking-[0.3em] block mb-2">
+            <?php echo __t('Fundamento', 'Foundation', 'Fundamento'); ?>
+        </span>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-6 tracking-tight">
+            <?php echo __t('¿Quiénes Somos?', 'Who We Are?', 'Quem Somos?'); ?>
+        </h2>
         <div class="h-1 w-20 bg-primary mx-auto mb-8 rounded-full"></div>
         <p class="text-base md:text-lg text-muted leading-relaxed text-justify md:text-center">
-            Somos una organización que nace de la crisis moral, espiritual y ética que atraviesa la iglesia cristiana evangélica contemporánea, donde surge la propuesta de una federación que sirva, capacite y represente a las iglesias evangélicas con excelencia, integridad, santidad, honestidad y reverente temor a Jehová; preparando y provocando así el último y gran despertar del avivamiento en la nación de Venezuela y en toda Latinoamérica.
+            <?php echo __t(
+                'Somos una organización que nace de la crisis moral, espiritual y ética que atraviesa la iglesia cristiana evangélica contemporánea, donde surge la propuesta de una federación que sirva, capacite y represente a las iglesias evangélicas con excelencia, integridad, santidad, honestidad y reverente temor a Jehová; preparando y provocando así el último y gran despertar del avivamiento en la nación de Venezuela y en toda Latinoamérica.',
+                'We are an organization born from the moral, spiritual, and ethical crisis facing the contemporary evangelical Christian church, giving rise to the vision of a federation that serves, equips, and represents evangelical churches with excellence, integrity, holiness, honesty, and reverent fear of the Lord; thereby preparing and sparking the last and great revival awakening in the nation of Venezuela and across all Latin America.',
+                'Somos uma organização que nasce da crise moral, espiritual e ética enfrentada pela igreja cristã evangélica contemporânea, da qual surge a proposta de uma federação que sirva, capacite e represente as igrejas evangélicas com excelência, integridade, santidade, honestidade e reverente temor ao Senhor; preparando e despertando assim o último e grande avivamento na nação da Venezuela e em toda a América Latina.'
+            ); ?>
         </p>
     </div>
 </section>
@@ -49,24 +60,31 @@ get_header(); ?>
                 <div>
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-primary/20 flex items-center justify-center text-primary flex-shrink-0">
-                            <!-- Icono SVG Visión -->
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs uppercase tracking-widest text-primary font-bold">Proyección</span>
-                            <h3 class="text-2xl font-extrabold text-dark">Nuestra Visión</h3>
+                            <span class="text-xs uppercase tracking-widest text-primary font-bold">
+                                <?php echo __t('Proyección', 'Projection', 'Projeção'); ?>
+                            </span>
+                            <h3 class="text-2xl font-extrabold text-dark">
+                                <?php echo __t('Nuestra Visión', 'Our Vision', 'Nossa Visão'); ?>
+                            </h3>
                         </div>
                     </div>
                     <p class="text-muted text-sm md:text-base leading-relaxed text-justify">
-                        Ser una red nacional de iglesias avivadas y unidas en el Espíritu, comprometidas con la transformación espiritual y social de nuestra nación a través del Evangelio de Cristo; fortaleciendo el cuidado integral (físico y espiritual) de los ministros y creyentes que la conforman; para glorificar a Dios y expandir su Reino en cada nación.
+                        <?php echo __t(
+                            'Ser una red nacional de iglesias avivadas y unidas en el Espíritu, comprometidas con la transformación espiritual y social de nuestra nación a través del Evangelio de Cristo; fortaleciendo el cuidado integral (físico y espiritual) de los ministros y creyentes que la conforman; para glorificar a Dios y expandir su Reino en cada nación.',
+                            'To be a national network of revived and Spirit-united churches, committed to the spiritual and social transformation of our nation through the Gospel of Christ; strengthening the comprehensive (physical and spiritual) care of the ministers and believers that comprise it; to glorify God and expand His Kingdom in every nation.',
+                            'Ser uma rede nacional de igrejas avivadas e unidas no Espírito, comprometidas com a transformação espiritual e social de nossa nação por meio do Evangelho de Cristo; fortalecendo o cuidado integral (físico e espiritual) dos ministros e crentes que a compõem; para glorificar a Deus e expandir Seu Reino em cada nação.'
+                        ); ?>
                     </p>
                 </div>
                 <div class="mt-8 pt-4 border-t border-gray-100 flex items-center gap-2 text-xs font-semibold text-primary">
                     <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                    Alcance Nacional & Global
+                    <?php echo __t('Alcance Nacional & Global', 'National & Global Reach', 'Alcance Nacional & Global'); ?>
                 </div>
             </div>
 
@@ -75,7 +93,6 @@ get_header(); ?>
                 <div>
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-14 h-14 rounded-2xl bg-primary/20 border border-primary/30 flex items-center justify-center text-primary flex-shrink-0">
-                            <!-- Icono SVG Misión / Objetivo -->
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <circle cx="12" cy="12" r="10" stroke-width="1.8"></circle>
                                 <circle cx="12" cy="12" r="6" stroke-width="1.8"></circle>
@@ -83,17 +100,25 @@ get_header(); ?>
                             </svg>
                         </div>
                         <div>
-                            <span class="text-xs uppercase tracking-widest text-primary font-bold">Compromiso</span>
-                            <h3 class="text-2xl font-extrabold text-white">Nuestra Misión</h3>
+                            <span class="text-xs uppercase tracking-widest text-primary font-bold">
+                                <?php echo __t('Compromiso', 'Commitment', 'Compromisso'); ?>
+                            </span>
+                            <h3 class="text-2xl font-extrabold text-white">
+                                <?php echo __t('Nuestra Misión', 'Our Mission', 'Nossa Missão'); ?>
+                            </h3>
                         </div>
                     </div>
                     <p class="text-gray-300 text-sm md:text-base leading-relaxed text-justify">
-                        Promover el avivamiento por medio de la unidad y cooperación entre las iglesias evangélicas, fortaleciendo su misión, su crecimiento espiritual y social. Movilizando a las iglesias hacia la evangelización, la plantación de nuevas congregaciones y la transformación integral de comunidades, representando y apoyando a las iglesias miembros ante instancias públicas, velando por la libertad religiosa y la ética cristiana en la nación, para glorificar a Dios y servir a la sociedad.
+                        <?php echo __t(
+                            'Promover el avivamiento por medio de la unidad y cooperación entre las iglesias evangélicas, fortaleciendo su misión, su crecimiento espiritual y social. Movilizando a las iglesias hacia la evangelización, la plantación de nuevas congregaciones y la transformación integral de comunidades, representando y apoyando a las iglesias miembros ante instancias públicas, velando por la libertad religiosa y la ética cristiana en la nación, para glorificar a Dios y servir a la sociedad.',
+                            'To promote revival through unity and cooperation among evangelical churches, strengthening their mission and spiritual and social growth. Mobilizing churches toward evangelism, planting new congregations, and transforming communities comprehensively, representing and supporting member churches before public institutions, upholding religious freedom and Christian ethics in the nation, to glorify God and serve society.',
+                            'Promover o avivamento por meio da unidade e cooperação entre as igrejas evangélicas, fortalecendo sua missão, crescimento espiritual e social. Mobilizando as igrejas para a evangelização, plantação de novas congregações e transformação integral de comunidades, representando e apoiando as igrejas membros perante instâncias públicas, zelando pela liberdade religiosa e pela ética cristã na nação, para glorificar a Deus e servir à sociedade.'
+                        ); ?>
                     </p>
                 </div>
                 <div class="mt-8 pt-4 border-t border-zinc-800 flex items-center gap-2 text-xs font-semibold text-primary">
                     <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                    Unidad, Representación & Acción
+                    <?php echo __t('Unidad, Representación & Acción', 'Unity, Representation & Action', 'Unidade, Representação & Ação'); ?>
                 </div>
             </div>
 
@@ -108,41 +133,69 @@ get_header(); ?>
             
             <!-- Valores Fundamentales (7 cols) -->
             <div class="lg:col-span-7">
-                <span class="text-primary font-bold text-xs uppercase tracking-[0.3em] block mb-2">Ética & Conducta</span>
-                <h3 class="text-2xl md:text-3xl font-extrabold text-dark mb-6">Valores Fundamentales</h3>
+                <span class="text-primary font-bold text-xs uppercase tracking-[0.3em] block mb-2">
+                    <?php echo __t('Ética & Conducta', 'Ethics & Conduct', 'Ética & Conduta'); ?>
+                </span>
+                <h3 class="text-2xl md:text-3xl font-extrabold text-dark mb-6">
+                    <?php echo __t('Valores Fundamentales', 'Foundational Values', 'Valores Fundamentais'); ?>
+                </h3>
                 <div class="flex flex-wrap gap-2.5">
                     <?php
-                    $valores = ['Unidad', 'Santidad', 'Integridad', 'Honestidad', 'Transparencia', 'Humildad', 'Lealtad', 'Sinceridad', 'Compromiso', 'Respeto', 'Servicio'];
+                    $val_es = ['Unidad', 'Santidad', 'Integridad', 'Honestidad', 'Transparencia', 'Humildad', 'Lealtad', 'Sinceridad', 'Compromiso', 'Respeto', 'Servicio'];
+                    $val_en = ['Unity', 'Holiness', 'Integrity', 'Honesty', 'Transparency', 'Humility', 'Loyalty', 'Sincerity', 'Commitment', 'Respect', 'Service'];
+                    $val_pt = ['Unidade', 'Santidade', 'Integridade', 'Honestidade', 'Transparência', 'Humildade', 'Lealdade', 'Sinceridade', 'Compromisso', 'Respeito', 'Serviço'];
+                    $cur_lang = fenav_get_current_lang();
+                    $valores = ($cur_lang === 'en') ? $val_en : (($cur_lang === 'pt') ? $val_pt : $val_es);
                     foreach ($valores as $valor) {
                         echo "<span class='px-4 py-2 bg-gray-50 text-dark font-semibold text-xs md:text-sm rounded-xl border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors shadow-sm'>$valor</span>";
                     }
                     ?>
                 </div>
-                <p class="text-xs text-gray-500 mt-6 italic">* Principios irrenunciables que norman cada decisión y acción ministerial de la institución.</p>
+                <p class="text-xs text-gray-500 mt-6 italic">
+                    <?php echo __t(
+                        '* Principios irrenunciables que norman cada decisión y acción ministerial de la institución.',
+                        '* Inalienable principles that govern every ministerial decision and action of the institution.',
+                        '* Princípios inegociáveis que regem cada decisão e ação ministerial da instituição.'
+                    ); ?>
+                </p>
             </div>
 
             <!-- Áreas de Enfoque y Metas (5 cols) -->
             <div class="lg:col-span-5 bg-gray-50 p-8 rounded-3xl border border-gray-200/80">
-                <span class="text-primary font-bold text-xs uppercase tracking-[0.3em] block mb-2">Estrategia</span>
-                <h3 class="text-xl font-extrabold text-dark mb-4">Áreas Clave de Acción</h3>
+                <span class="text-primary font-bold text-xs uppercase tracking-[0.3em] block mb-2">
+                    <?php echo __t('Estrategia', 'Strategy', 'Estratégia'); ?>
+                </span>
+                <h3 class="text-xl font-extrabold text-dark mb-4">
+                    <?php echo __t('Áreas Clave de Acción', 'Key Areas of Action', 'Áreas-Chave de Ação'); ?>
+                </h3>
                 <ul class="space-y-3 mb-8">
                     <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-                        <span class="w-2.5 h-2.5 bg-primary rounded-full"></span> Avivamiento y Renovación Espiritual
+                        <span class="w-2.5 h-2.5 bg-primary rounded-full"></span> 
+                        <?php echo __t('Avivamiento y Renovación Espiritual', 'Revival & Spiritual Renewal', 'Avivamento & Renovação Espiritual'); ?>
                     </li>
                     <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-                        <span class="w-2.5 h-2.5 bg-primary rounded-full"></span> Evangelismo y Plantación
+                        <span class="w-2.5 h-2.5 bg-primary rounded-full"></span> 
+                        <?php echo __t('Evangelismo y Plantación', 'Evangelism & Church Planting', 'Evangelismo & Plantação de Igrejas'); ?>
                     </li>
                     <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-                        <span class="w-2.5 h-2.5 bg-primary rounded-full"></span> Educación Teológica y Liderazgo
+                        <span class="w-2.5 h-2.5 bg-primary rounded-full"></span> 
+                        <?php echo __t('Educación Teológica y Liderazgo', 'Theological Education & Leadership', 'Educação Teológica & Liderança'); ?>
                     </li>
                     <li class="flex items-center gap-3 text-gray-700 text-sm font-medium">
-                        <span class="w-2.5 h-2.5 bg-primary rounded-full"></span> Ayuda y Transformación Social
+                        <span class="w-2.5 h-2.5 bg-primary rounded-full"></span> 
+                        <?php echo __t('Ayuda y Transformación Social', 'Social Relief & Transformation', 'Ajuda & Transformação Social'); ?>
                     </li>
                 </ul>
 
-                <h4 class="text-sm font-bold uppercase tracking-wider text-dark mb-2">Meta a Largo Plazo</h4>
+                <h4 class="text-sm font-bold uppercase tracking-wider text-dark mb-2">
+                    <?php echo __t('Meta a Largo Plazo', 'Long-Term Goal', 'Meta a Longo Prazo'); ?>
+                </h4>
                 <div class="p-4 rounded-2xl bg-white border border-primary/30 text-dark text-sm leading-relaxed font-semibold">
-                    “Despertar y consolidar la Iglesia de Jesucristo como un solo cuerpo en victoria.”
+                    <?php echo __t(
+                        '“Despertar y consolidar la Iglesia de Jesucristo como un solo cuerpo en victoria.”',
+                        '“Awakening and consolidating the Church of Jesus Christ as one body in victory.”',
+                        '“Despertar e consolidar a Igreja de Jesus Cristo como um só corpo em vitória.”'
+                    ); ?>
                 </div>
             </div>
 
@@ -156,11 +209,19 @@ get_header(); ?>
         
         <!-- Alianzas Estratégicas -->
         <div class="text-center mb-16">
-            <span class="text-primary font-bold text-xs uppercase tracking-[0.3em] block mb-2">Cooperación Institucional</span>
-            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">Nuestras Alianzas</h2>
+            <span class="text-primary font-bold text-xs uppercase tracking-[0.3em] block mb-2">
+                <?php echo __t('Cooperación Institucional', 'Institutional Cooperation', 'Cooperação Institucional'); ?>
+            </span>
+            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight">
+                <?php echo __t('Nuestras Alianzas', 'Our Strategic Alliances', 'Nossas Alianças'); ?>
+            </h2>
             <div class="h-1 w-20 bg-primary mx-auto mt-4 rounded-full"></div>
             <p class="text-gray-400 text-sm max-w-xl mx-auto mt-4">
-                Organizaciones e instituciones que comparten la visión de servicio y respaldo a la comunidad.
+                <?php echo __t(
+                    'Organizaciones e instituciones que comparten la visión de servicio y respaldo a la comunidad.',
+                    'Organizations and institutions that share the vision of service and support to the community.',
+                    'Organizações e instituições que compartilham a visão de serviço e apoio à comunidade.'
+                ); ?>
             </p>
         </div>
 
@@ -190,10 +251,18 @@ get_header(); ?>
         <!-- Aval Legal y Documentación para Descarga -->
         <div class="border-t border-zinc-800 pt-16">
             <div class="text-center max-w-2xl mx-auto mb-12">
-                <span class="text-primary font-bold text-xs uppercase tracking-[0.3em] block mb-2">Trámites y Requisitos</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">Documentación Oficial de Afiliación</h2>
+                <span class="text-primary font-bold text-xs uppercase tracking-[0.3em] block mb-2">
+                    <?php echo __t('Trámites y Requisitos', 'Procedures & Requirements', 'Trâmites e Requisitos'); ?>
+                </span>
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-4">
+                    <?php echo __t('Documentación Oficial de Afiliación', 'Official Affiliation Documentation', 'Documentação Oficial de Filiação'); ?>
+                </h2>
                 <p class="text-gray-400 text-sm leading-relaxed">
-                    Para formalizar su ingreso a la Federación Nacional de Avivamiento, descargue los siguientes formularios oficiales. Una vez completados y suscritos, deben remitirse escaneados en formato PDF a nuestra secretaría general.
+                    <?php echo __t(
+                        'Para formalizar su ingreso a la Federación Nacional de Avivamiento, descargue los siguientes formularios oficiales. Una vez completados y suscritos, deben remitirse escaneados en formato PDF a nuestra secretaría general.',
+                        'To formalize your affiliation with the National Revival Federation, download the following official forms. Once completed and signed, submit them scanned in PDF format to our general secretariat.',
+                        'Para formalizar seu ingresso na Federação Nacional de Avivamento, baixe os seguintes formulários oficiais. Após preenchidos e assinados, envie-os digitalizados em formato PDF à nossa secretaria-geral.'
+                    ); ?>
                 </p>
             </div>
             
@@ -209,12 +278,18 @@ get_header(); ?>
                                 </svg>
                             </div>
                             <span class="px-3 py-1 rounded-full bg-zinc-900 text-[10px] font-mono uppercase tracking-wider text-gray-400 border border-zinc-800">
-                                Formato Oficial PDF
+                                <?php echo __t('Formato Oficial PDF', 'Official PDF Format', 'Formato Oficial PDF'); ?>
                             </span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Hoja de Vida FENAV</h3>
+                        <h3 class="text-xl font-bold text-white mb-3">
+                            <?php echo __t('Hoja de Vida FENAV', 'FENAV Profile Form', 'Currículo FENAV'); ?>
+                        </h3>
                         <p class="text-sm text-gray-400 leading-relaxed mb-8">
-                            Instrumento detallado para el registro de datos personales, familiares, trayectoria ministerial/académica y perfil general del ministro solicitante.
+                            <?php echo __t(
+                                'Instrumento detallado para el registro de datos personales, familiares, trayectoria ministerial/académica y perfil general del ministro solicitante.',
+                                'Comprehensive instrument for recording personal, family, ministerial/academic background, and general profile of the applicant minister.',
+                                'Instrumento detalhado para o registro de dados pessoais, familiares, trajetória ministerial/acadêmica e perfil geral do ministro solicitante.'
+                            ); ?>
                         </p>
                     </div>
 
@@ -222,7 +297,7 @@ get_header(); ?>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                         </svg>
-                        Descargar Hoja de Vida
+                        <?php echo __t('Descargar Hoja de Vida', 'Download Profile Form', 'Baixar Formulário'); ?>
                     </a>
                 </div>
 
@@ -236,12 +311,18 @@ get_header(); ?>
                                 </svg>
                             </div>
                             <span class="px-3 py-1 rounded-full bg-zinc-900 text-[10px] font-mono uppercase tracking-wider text-gray-400 border border-zinc-800">
-                                Formato Oficial PDF
+                                <?php echo __t('Formato Oficial PDF', 'Official PDF Format', 'Formato Oficial PDF'); ?>
                             </span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Solicitud de Afiliación</h3>
+                        <h3 class="text-xl font-bold text-white mb-3">
+                            <?php echo __t('Solicitud de Afiliación', 'Affiliation Application Form', 'Solicitação de Filiação'); ?>
+                        </h3>
                         <p class="text-sm text-gray-400 leading-relaxed mb-8">
-                            Documento legal para postular la incorporación de la congregación como Miembro Afiliado, Patrocinador u Honorario, adjuntando soportes requeridos.
+                            <?php echo __t(
+                                'Documento legal para postular la incorporación de la congregación como Miembro Afiliado, Patrocinador u Honorario, adjuntando soportes requeridos.',
+                                'Official document to apply for church admission as an Affiliated, Sponsor, or Honorary Member, attaching the required credentials.',
+                                'Documento legal para solicitar o ingresso da congregação como Membro Filiado, Patrocinador ou Honorário, anexando a documentação exigida.'
+                            ); ?>
                         </p>
                     </div>
 
@@ -249,7 +330,7 @@ get_header(); ?>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                         </svg>
-                        Descargar Formulario
+                        <?php echo __t('Descargar Formulario', 'Download Application Form', 'Baixar Solicitação'); ?>
                     </a>
                 </div>
 
