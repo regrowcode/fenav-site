@@ -10,21 +10,23 @@ get_header(); ?>
     <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <video 
             id="hero-bg-video"
-            class="w-full h-full object-cover opacity-35"
+            class="w-full h-full object-cover object-center"
             autoplay 
             muted 
             loop 
-            playsinline>
+            playsinline
+            preload="auto">
             <source src="<?php echo esc_url(get_template_directory_uri() . '/video/avivamiento-fuego.mp4'); ?>" type="video/mp4">
         </video>
-        <!-- Capa oscura semitransparente para preservar la legibilidad -->
-        <div class="absolute inset-0 bg-dark/60"></div>
+        <!-- Overlay equilibrado para garantizar la visibilidad del video y la lectura del texto -->
+        <div class="absolute inset-0 bg-black/45"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-dark/70 via-transparent to-dark"></div>
     </div>
     <script>
         (function() {
             var v = document.getElementById('hero-bg-video');
             if (v) {
-                var setSpeed = function() { v.playbackRate = 0.65; };
+                var setSpeed = function() { v.playbackRate = 0.75; };
                 setSpeed();
                 v.addEventListener('loadedmetadata', setSpeed);
                 v.addEventListener('play', setSpeed);
@@ -36,11 +38,8 @@ get_header(); ?>
     <div class="absolute inset-0 pointer-events-none z-0">
         <div class="absolute top-0 right-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]"></div>
         <div class="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-yellow-600/10 rounded-full blur-[100px]"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:40px_40px] opacity-[0.07]"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:40px_40px] opacity-[0.05]"></div>
     </div>
-    
-    <!-- Gradiente de profundidad superior e inferior -->
-    <div class="absolute inset-0 bg-gradient-to-b from-dark/95 via-transparent to-dark pointer-events-none z-0"></div>
     
     <!-- Líneas doradas con resplandor sutil -->
     <div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/60 to-transparent z-10"></div>
