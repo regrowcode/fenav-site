@@ -5,9 +5,11 @@
  */
 get_header(); 
 
-$current_lang = fenav_get_current_lang();
+$current_lang = fenav_get_current_lang();// Datos y modelos de afiliación FENAV
+$modelos_data = fenav_get_modelos_afiliacion_data();
+$pagos_config = fenav_get_pagos_config();
 
-// Arreglo con la información de las iglesias afiliadas
+// Arreglo con la información de las iglesias afiliadas y bajo cobertura
 $iglesias = [
     [
         'id'          => 'monte-sion',
@@ -17,6 +19,7 @@ $iglesias = [
         'ciudad'      => 'Barquisimeto',
         'estado'      => 'Lara',
         'estado_slug' => 'lara',
+        'tipo'        => 'afiliada',
         'telefono'    => '+58 (0251) 000-0000',
         'descripcion' => [
             'es' => 'Congregación apostólica y profética con fuerte enfoque en discipulado bíblico, adoración y avivamiento.',
@@ -32,6 +35,7 @@ $iglesias = [
         'ciudad'      => 'Cabudare',
         'estado'      => 'Lara',
         'estado_slug' => 'lara',
+        'tipo'        => 'afiliada',
         'telefono'    => '+58 (0251) 000-0000',
         'descripcion' => [
             'es' => 'Comunidad dedicada a la restauración familiar, paternidad espiritual y vigilias de oración e intercesión.',
@@ -47,6 +51,7 @@ $iglesias = [
         'ciudad'      => 'Barquisimeto',
         'estado'      => 'Lara',
         'estado_slug' => 'lara',
+        'tipo'        => 'afiliada',
         'telefono'    => '+58 (0251) 000-0000',
         'descripcion' => [
             'es' => 'Ministerio comprometido con la sana doctrina, formación teológica, santidad y evangelismo en sectores populares.',
@@ -62,6 +67,7 @@ $iglesias = [
         'ciudad'      => 'Barquisimeto',
         'estado'      => 'Lara',
         'estado_slug' => 'lara',
+        'tipo'        => 'hija',
         'telefono'    => '+58 (0251) 000-0000',
         'descripcion' => [
             'es' => 'Foco en evangelismo comunitario, manifestaciones del Espíritu Santo y atención de comedores para niños.',
@@ -77,6 +83,7 @@ $iglesias = [
         'ciudad'      => 'Guanare',
         'estado'      => 'Portuguesa',
         'estado_slug' => 'portuguesa',
+        'tipo'        => 'afiliada',
         'telefono'    => '+58 (0257) 000-0000',
         'descripcion' => [
             'es' => 'Altar de intercesión permanente, transformación territorial y apoyo a ministros en los llanos occidentales.',
@@ -92,6 +99,7 @@ $iglesias = [
         'ciudad'      => 'Cabudare',
         'estado'      => 'Lara',
         'estado_slug' => 'lara',
+        'tipo'        => 'hija',
         'telefono'    => '+58 (0251) 000-0000',
         'descripcion' => [
             'es' => 'Congregación centrada en la vida devocional, cuidado pastoral integral y misiones de ayuda social.',
@@ -601,12 +609,21 @@ $iglesias = [
                         </div>
                     </div>
 
-                    <!-- Botón de Acción -->
+                    <!-- Botón de Acción y Tipo de Modelo -->
                     <div class="mt-8 pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
-                        <span class="text-emerald-600 font-bold flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                            <?php echo __t('Afiliada', 'Affiliated', 'Filiada'); ?>
-                        </span>
+                        <?php 
+                        $es_hija = ($iglesia['tipo'] ?? 'afiliada') === 'hija'; 
+                        if ($es_hija) : ?>
+                            <span class="text-cyan-700 bg-cyan-50 px-2.5 py-1 rounded-full border border-cyan-200/80 font-bold flex items-center gap-1.5 text-[11px]">
+                                <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse"></span>
+                                <?php echo __t('Bajo Cobertura', 'Under Covering', 'Sob Cobertura'); ?>
+                            </span>
+                        <?php else : ?>
+                            <span class="text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/80 font-bold flex items-center gap-1.5 text-[11px]">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                <?php echo __t('Afiliada (Membresía)', 'Affiliated (Membership)', 'Filiada (Membro)'); ?>
+                            </span>
+                        <?php endif; ?>
                         
                         <button type="button" onclick="focusStateOnMap('<?php echo esc_js($iglesia['estado_slug']); ?>')" class="text-primary hover:text-dark font-extrabold uppercase tracking-wider inline-flex items-center gap-1 transition-colors">
                             <?php echo __t('Ver en Mapa', 'View on Map', 'Ver no Mapa'); ?> &uarr;
@@ -627,47 +644,610 @@ $iglesias = [
     </div>
 </section>
 
-<!-- 4. LLAMADO A LA AFILIACIÓN CON DISEÑO INSTITUCIONAL -->
-<section class="py-20 bg-gray-50 border-t border-gray-200 px-4 md:px-6">
-    <div class="container mx-auto max-w-5xl">
-        <div class="bg-gradient-to-br from-zinc-950 via-dark to-zinc-900 rounded-3xl p-8 md:p-14 border border-primary/30 shadow-2xl relative overflow-hidden">
-            
-            <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- 4. SECCIÓN MODELOS DE PERTENENCIA: AFILIACIÓN & COBERTURA -->
+<section id="modelos-afiliacion" class="py-24 bg-gradient-to-b from-dark via-zinc-950 to-dark text-white px-4 md:px-6 relative overflow-hidden border-t border-primary/30">
+    <!-- Luces de fondo y resplandor -->
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute top-1/4 -left-40 w-96 h-96 bg-primary/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-1/4 -right-40 w-96 h-96 bg-yellow-600/10 rounded-full blur-[120px]"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:40px_40px] opacity-10"></div>
+    </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-                <div class="lg:col-span-8 space-y-4">
-                    <span class="text-primary font-bold text-xs uppercase tracking-widest">
-                        <?php echo __t('¿Deseas incorporar tu congregación?', 'Would you like to register your congregation?', 'Deseja incorporar sua congregação?'); ?>
-                    </span>
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-                        <?php echo __t(
-                            'Afíliate a la Federación Nacional de Avivamiento',
-                            'Join the National Revival Federation',
-                            'Filie-se à Federação Nacional de Avivamento'
-                        ); ?>
-                    </h2>
-                    <p class="text-gray-300 text-sm md:text-base leading-relaxed">
-                        <?php echo __t(
-                            'Forma parte de la red de congregaciones que promueve el último y gran despertar espiritual con respaldo legal, ministerial y formativo en Venezuela.',
-                            'Be part of the network of congregations promoting the great spiritual awakening with legal, ministerial, and educational backing in Venezuela.',
-                            'Faça parte da rede de congregações que promove o último e grande despertar espiritual com respaldo legal, ministerial e formativo na Venezuela.'
-                        ); ?>
-                    </p>
+    <div class="container mx-auto max-w-7xl relative z-10">
+        
+        <!-- Encabezado de la Sección -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900 border border-primary/40 text-primary text-xs font-bold uppercase tracking-widest mb-4">
+                <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                <?php echo __t('Estructura Ministerial & Pertenencia', 'Ministerial Structure & Membership', 'Estrutura Ministerial & Filiação'); ?>
+            </span>
+            <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">
+                <?php echo __t('Modelos de Incorporación', 'Incorporation Models', 'Modelos de Incorporação'); ?> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-yellow-200 to-primary">FENAV</span>
+            </h2>
+            <div class="h-1 w-24 bg-primary mx-auto mb-6 rounded-full"></div>
+            <p class="text-gray-300 text-sm md:text-base leading-relaxed">
+                <?php echo __t(
+                    'La Federación Nacional de Avivamiento ofrece dos esquemas estructurados para pastores y congregaciones: el modelo de Iglesias Afiliadas con beneficios de membresía mensual y el modelo de Iglesias Hijas bajo cobertura y paternidad espiritual.',
+                    'The National Revival Federation offers two structured frameworks for pastors and congregations: the Affiliated Churches model with monthly membership benefits, and the Daughter Churches model under spiritual covering and fatherhood.',
+                    'A Federação Nacional de Avivamento oferece dois esquemas estruturados para pastores e congregações: o modelo de Igrejas Filiadas com benefícios de mensalidade e o modelo de Igrejas Filhas sob cobertura e paternidade espiritual.'
+                ); ?>
+            </p>
+        </div>
+
+        <!-- Selector de Pestañas Interactivas (Tabs) -->
+        <div class="flex flex-wrap items-center justify-center gap-3 mb-12">
+            <button type="button" class="afiliacion-tab-btn active px-6 py-3 rounded-2xl font-extrabold text-xs md:text-sm tracking-wider uppercase transition-all duration-300 flex items-center gap-2.5 bg-gradient-to-r from-primary to-yellow-500 text-dark shadow-[0_0_20px_rgba(212,175,55,0.4)]" data-tab="tab-afiliadas">
+                <span>🏛️</span>
+                <span><?php echo __t('Iglesias Afiliadas (Membresía)', 'Affiliated Churches (Membership)', 'Igrejas Filiadas (Membro)'); ?></span>
+            </button>
+            <button type="button" class="afiliacion-tab-btn px-6 py-3 rounded-2xl font-extrabold text-xs md:text-sm tracking-wider uppercase transition-all duration-300 flex items-center gap-2.5 bg-zinc-900 border border-zinc-800 text-gray-300 hover:text-white hover:border-primary/50" data-tab="tab-hijas">
+                <span>🌿</span>
+                <span><?php echo __t('Iglesias Hijas (Bajo Cobertura)', 'Daughter Churches (Covering)', 'Igrejas Filhas (Cobertura)'); ?></span>
+            </button>
+            <button type="button" class="afiliacion-tab-btn px-6 py-3 rounded-2xl font-extrabold text-xs md:text-sm tracking-wider uppercase transition-all duration-300 flex items-center gap-2.5 bg-zinc-900 border border-zinc-800 text-gray-300 hover:text-white hover:border-primary/50" data-tab="tab-comparativa">
+                <span>⚖️</span>
+                <span><?php echo __t('Matriz Comparativa', 'Comparison Matrix', 'Matriz Comparativa'); ?></span>
+            </button>
+            <button type="button" class="afiliacion-tab-btn px-6 py-3 rounded-2xl font-extrabold text-xs md:text-sm tracking-wider uppercase transition-all duration-300 flex items-center gap-2.5 bg-zinc-900 border border-zinc-800 text-gray-300 hover:text-white hover:border-primary/50" data-tab="tab-pagos">
+                <span>💳</span>
+                <span><?php echo __t('Pago Móvil & Membresía', 'Pago Móvil & Fees', 'Pago Móvil & Mensalidades'); ?></span>
+            </button>
+        </div>
+
+        <!-- CONTENEDOR DE PESTAÑAS -->
+        <div class="relative">
+
+            <!-- PESTAÑA 1: IGLESIAS AFILIADAS (MEMBRESÍA MENSUAL) -->
+            <div id="tab-afiliadas" class="afiliacion-tab-pane transition-opacity duration-300 block">
+                <div class="bg-zinc-900/90 border border-primary/30 rounded-3xl p-6 md:p-12 shadow-2xl backdrop-blur-xl">
+                    
+                    <!-- Header del Modelo -->
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-8 border-b border-zinc-800 mb-10">
+                        <div class="space-y-2">
+                            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/20 text-primary border border-primary/30 text-xs font-black uppercase tracking-wider">
+                                🏛️ <?php echo $modelos_data['afiliadas']['tag']; ?>
+                            </div>
+                            <h3 class="text-2xl md:text-4xl font-extrabold text-white">
+                                <?php echo $modelos_data['afiliadas']['titulo']; ?>
+                            </h3>
+                            <p class="text-gray-300 text-sm max-w-2xl">
+                                <?php echo $modelos_data['afiliadas']['subtitulo']; ?>
+                            </p>
+                        </div>
+                        <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800 text-right w-full lg:w-auto">
+                            <span class="text-xs text-gray-400 uppercase font-mono block mb-1">
+                                <?php echo $modelos_data['afiliadas']['tipo_cuota']; ?>
+                            </span>
+                            <span class="text-primary font-black text-lg block">
+                                <?php echo __t('Cuota de Sostenimiento', 'Support Contribution', 'Contribuição de Suporte'); ?>
+                            </span>
+                            <span class="text-[11px] text-gray-500 max-w-xs block mt-1">
+                                <?php echo $modelos_data['afiliadas']['cuota_nota']; ?>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Grid de Beneficios vs Requisitos -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
+                        
+                        <!-- Columna Izquierda: Beneficios Exclusivos -->
+                        <div class="bg-zinc-950/70 p-6 md:p-8 rounded-2xl border border-zinc-800 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 mb-6 pb-3 border-b border-zinc-800/80">
+                                    <div class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary text-lg">
+                                        🎁
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-white">
+                                            <?php echo __t('Beneficios para Pastores y Congregación', 'Benefits for Pastors & Congregation', 'Benefícios para Pastores e Congregação'); ?>
+                                        </h4>
+                                        <span class="text-xs text-primary font-medium"><?php echo __t('Respaldados por la membresía mensual', 'Backed by monthly membership', 'Apoiados pela mensalidade'); ?></span>
+                                    </div>
+                                </div>
+
+                                <ul class="space-y-5">
+                                    <?php foreach ($modelos_data['afiliadas']['beneficios'] as $b) : ?>
+                                        <li class="flex items-start gap-4">
+                                            <span class="text-2xl flex-shrink-0 mt-0.5 p-2 rounded-xl bg-zinc-900 border border-zinc-800"><?php echo $b['icono']; ?></span>
+                                            <div>
+                                                <h5 class="text-sm md:text-base font-bold text-white mb-1"><?php echo esc_html($b['titulo']); ?></h5>
+                                                <p class="text-xs md:text-sm text-gray-400 leading-relaxed"><?php echo esc_html($b['desc']); ?></p>
+                                            </div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Columna Derecha: Requisitos Obligatorios -->
+                        <div class="bg-zinc-950/70 p-6 md:p-8 rounded-2xl border border-zinc-800 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 mb-6 pb-3 border-b border-zinc-800/80">
+                                    <div class="w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 text-lg">
+                                        📋
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-white">
+                                            <?php echo __t('Requisitos de Afiliación (Editables)', 'Affiliation Requirements (Editable)', 'Requisitos de Filiação (Editáveis)'); ?>
+                                        </h4>
+                                        <span class="text-xs text-yellow-400/80 font-medium"><?php echo __t('Documentación y solvencia requerida', 'Documentation & compliance required', 'Documentação e quitação necessárias'); ?></span>
+                                    </div>
+                                </div>
+
+                                <ul class="space-y-4">
+                                    <?php foreach ($modelos_data['afiliadas']['requisitos'] as $r) : ?>
+                                        <li class="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 flex items-start gap-3">
+                                            <span class="text-emerald-400 flex-shrink-0 mt-1">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                            </span>
+                                            <div>
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <h5 class="text-xs md:text-sm font-bold text-gray-200"><?php echo esc_html($r['titulo']); ?></h5>
+                                                    <?php if ($r['obligatorio']) : ?>
+                                                        <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 font-semibold uppercase"><?php echo __t('Obligatorio', 'Required', 'Obrigatório'); ?></span>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <p class="text-xs text-gray-400 leading-relaxed"><?php echo esc_html($r['desc']); ?></p>
+                                            </div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Footer de Acción -->
+                    <div class="mt-10 pt-8 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-2 text-xs text-gray-400">
+                            <span class="text-primary text-base">💡</span>
+                            <span><?php echo __t('El pago de membresía se reporta vía Pago Móvil con respaldo administrativo de FENAV.', 'Membership fee is reported via Pago Móvil with FENAV administrative receipt.', 'A mensalidade é informada via Pago Móvil com comprovante FENAV.'); ?></span>
+                        </div>
+                        <div class="flex items-center gap-3 w-full sm:w-auto">
+                            <button type="button" onclick="openAfiliacionModal('afiliada')" class="flex-1 sm:flex-initial bg-gradient-to-r from-primary to-yellow-600 text-dark font-extrabold py-3.5 px-8 rounded-2xl shadow-lg hover:shadow-primary/30 hover:scale-[1.02] transition-all uppercase text-xs tracking-wider text-center">
+                                <?php echo $modelos_data['afiliadas']['cta']['texto']; ?> &rarr;
+                            </button>
+                            <button type="button" onclick="switchAfiliacionTab('tab-pagos')" class="bg-zinc-800 hover:bg-zinc-700 text-gray-200 font-bold py-3.5 px-6 rounded-2xl transition-all uppercase text-xs tracking-wider">
+                                <?php echo __t('Ver Datos de Pago', 'View Payment Info', 'Ver Dados de Pagamento'); ?>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
 
-                <div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-4">
-                    <a href="<?php echo esc_url(home_url('/nosotros')); ?>" class="text-center bg-gradient-to-r from-primary to-yellow-600 text-dark font-extrabold py-4 px-6 rounded-2xl shadow-lg hover:shadow-primary/30 hover:scale-[1.02] transition-all uppercase tracking-wider text-xs">
-                        <?php echo __t('Requisitos de Afiliación', 'Affiliation Requirements', 'Requisitos de Filiação'); ?>
-                    </a>
-                    <a href="mailto:correo@fenav.org" class="text-center bg-zinc-900 border border-zinc-700 text-gray-200 hover:text-white hover:border-primary font-bold py-4 px-6 rounded-2xl transition-all uppercase tracking-wider text-xs">
-                        <?php echo __t('Contactar Secretaría', 'Contact Secretariat', 'Contatar Secretaria'); ?>
-                    </a>
+            <!-- PESTAÑA 2: IGLESIAS HIJAS (BAJO COBERTURA) -->
+            <div id="tab-hijas" class="afiliacion-tab-pane transition-opacity duration-300 hidden">
+                <div class="bg-zinc-900/90 border border-cyan-500/30 rounded-3xl p-6 md:p-12 shadow-2xl backdrop-blur-xl">
+                    
+                    <!-- Header del Modelo -->
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 pb-8 border-b border-zinc-800 mb-10">
+                        <div class="space-y-2">
+                            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/80 text-cyan-400 border border-cyan-800 text-xs font-black uppercase tracking-wider">
+                                🌿 <?php echo $modelos_data['hijas']['tag']; ?>
+                            </div>
+                            <h3 class="text-2xl md:text-4xl font-extrabold text-white">
+                                <?php echo $modelos_data['hijas']['titulo']; ?>
+                            </h3>
+                            <p class="text-gray-300 text-sm max-w-2xl">
+                                <?php echo $modelos_data['hijas']['subtitulo']; ?>
+                            </p>
+                        </div>
+                        <div class="bg-zinc-950 p-5 rounded-2xl border border-zinc-800 text-right w-full lg:w-auto">
+                            <span class="text-xs text-gray-400 uppercase font-mono block mb-1">
+                                <?php echo $modelos_data['hijas']['tipo_cuota']; ?>
+                            </span>
+                            <span class="text-cyan-400 font-black text-lg block">
+                                <?php echo __t('Paternidad & Tutela Espiritual', 'Fatherhood & Spiritual Care', 'Paternidade & Tutela Espiritual'); ?>
+                            </span>
+                            <span class="text-[11px] text-gray-500 max-w-xs block mt-1">
+                                <?php echo $modelos_data['hijas']['cuota_nota']; ?>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Grid de Beneficios vs Requisitos -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
+                        
+                        <!-- Columna Izquierda: Beneficios de Cobertura -->
+                        <div class="bg-zinc-950/70 p-6 md:p-8 rounded-2xl border border-zinc-800 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 mb-6 pb-3 border-b border-zinc-800/80">
+                                    <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-lg">
+                                        🛡️
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-white">
+                                            <?php echo __t('Beneficios de Cobertura y Paternidad', 'Covering & Fatherhood Benefits', 'Benefícios de Cobertura e Paternidade'); ?>
+                                        </h4>
+                                        <span class="text-xs text-cyan-400/80 font-medium"><?php echo __t('Acompañamiento ministerial directo', 'Direct ministerial mentorship', 'Acompanhamento ministerial direto'); ?></span>
+                                    </div>
+                                </div>
+
+                                <ul class="space-y-5">
+                                    <?php foreach ($modelos_data['hijas']['beneficios'] as $b) : ?>
+                                        <li class="flex items-start gap-4">
+                                            <span class="text-2xl flex-shrink-0 mt-0.5 p-2 rounded-xl bg-zinc-900 border border-zinc-800"><?php echo $b['icono']; ?></span>
+                                            <div>
+                                                <h5 class="text-sm md:text-base font-bold text-white mb-1"><?php echo esc_html($b['titulo']); ?></h5>
+                                                <p class="text-xs md:text-sm text-gray-400 leading-relaxed"><?php echo esc_html($b['desc']); ?></p>
+                                            </div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Columna Derecha: Requisitos de Cobertura -->
+                        <div class="bg-zinc-950/70 p-6 md:p-8 rounded-2xl border border-zinc-800 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 mb-6 pb-3 border-b border-zinc-800/80">
+                                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 text-lg">
+                                        📜
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-bold text-white">
+                                            <?php echo __t('Requisitos de Sujeción & Ingreso', 'Requirements for Submission & Entry', 'Requisitos de Submissão & Ingresso'); ?>
+                                        </h4>
+                                        <span class="text-xs text-blue-400/80 font-medium"><?php echo __t('Alineamiento pastoral y doctrinal', 'Pastoral and doctrinal alignment', 'Alinhamento pastoral e doutrinário'); ?></span>
+                                    </div>
+                                </div>
+
+                                <ul class="space-y-4">
+                                    <?php foreach ($modelos_data['hijas']['requisitos'] as $r) : ?>
+                                        <li class="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 flex items-start gap-3">
+                                            <span class="text-cyan-400 flex-shrink-0 mt-1">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                            </span>
+                                            <div>
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <h5 class="text-xs md:text-sm font-bold text-gray-200"><?php echo esc_html($r['titulo']); ?></h5>
+                                                    <?php if ($r['obligatorio']) : ?>
+                                                        <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-950/80 text-cyan-400 border border-cyan-800/60 font-semibold uppercase"><?php echo __t('Obligatorio', 'Required', 'Obrigatório'); ?></span>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <p class="text-xs text-gray-400 leading-relaxed"><?php echo esc_html($r['desc']); ?></p>
+                                            </div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Footer de Acción -->
+                    <div class="mt-10 pt-8 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-2 text-xs text-gray-400">
+                            <span class="text-cyan-400 text-base">🕊️</span>
+                            <span><?php echo __t('Las iglesias hijas no requieren personalidad jurídica previa para iniciar bajo cobertura.', 'Daughter churches do not require prior legal entity to start under covering.', 'Igrejas filhas não necessitam de personalidade jurídica prévia para iniciar sob cobertura.'); ?></span>
+                        </div>
+                        <button type="button" onclick="openAfiliacionModal('hija')" class="w-full sm:w-auto bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-extrabold py-3.5 px-8 rounded-2xl shadow-lg hover:shadow-cyan-500/30 hover:scale-[1.02] transition-all uppercase text-xs tracking-wider text-center">
+                            <?php echo $modelos_data['hijas']['cta']['texto']; ?> &rarr;
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- PESTAÑA 3: MATRIZ COMPARATIVA -->
+            <div id="tab-comparativa" class="afiliacion-tab-pane transition-opacity duration-300 hidden">
+                <div class="bg-zinc-900/90 border border-zinc-800 rounded-3xl p-6 md:p-10 shadow-2xl backdrop-blur-xl overflow-x-auto">
+                    
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl md:text-3xl font-extrabold text-white mb-2">
+                            <?php echo __t('Comparativa Directa de Modelos', 'Direct Model Comparison', 'Comparação Direta de Modelos'); ?>
+                        </h3>
+                        <p class="text-gray-400 text-xs md:text-sm">
+                            <?php echo __t('Evalúa las características principales de cada opción antes de iniciar tu proceso.', 'Evaluate key features of each option before starting your process.', 'Avalie as principais características de cada opção antes de iniciar.'); ?>
+                        </p>
+                    </div>
+
+                    <table class="w-full text-left border-collapse min-w-[640px]">
+                        <thead>
+                            <tr class="border-b border-zinc-800 text-xs uppercase tracking-wider text-gray-400">
+                                <th class="py-4 px-4 font-bold"><?php echo __t('Característica / Dimensión', 'Feature / Dimension', 'Característica / Dimensão'); ?></th>
+                                <th class="py-4 px-4 font-bold text-primary">🏛️ <?php echo __t('Iglesias Afiliadas', 'Affiliated Churches', 'Igrejas Filiadas'); ?></th>
+                                <th class="py-4 px-4 font-bold text-cyan-400">🌿 <?php echo __t('Iglesias Hijas (Cobertura)', 'Daughter Churches (Covering)', 'Igrejas Filhas (Cobertura)'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-800/60 text-xs md:text-sm">
+                            <tr>
+                                <td class="py-4 px-4 font-bold text-gray-300"><?php echo __t('Esquema de Cuota / Aporte', 'Fee / Contribution Scheme', 'Mensalidade / Esquema'); ?></td>
+                                <td class="py-4 px-4 text-primary font-semibold"><?php echo __t('Membresía Mensual Fija (Pago Móvil)', 'Fixed Monthly Fee (Pago Móvil)', 'Mensalidade Fixa (Pago Móvil)'); ?></td>
+                                <td class="py-4 px-4 text-cyan-400 font-semibold"><?php echo __t('Sin cuota fija obligatoria (Primicias/Ofrenda)', 'No fixed fee required (Freewill/Offerings)', 'Sem mensalidade fixa (Primícias/Ofertas)'); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4 font-bold text-gray-300"><?php echo __t('Fondo y Convenios de Salud para Pastores', 'Health Fund & Medical Coverage', 'Fundo de Saúde para Pastores'); ?></td>
+                                <td class="py-4 px-4 text-emerald-400 font-semibold">✓ <?php echo __t('Incluido (Pastor y Cónyuge)', 'Included (Pastor & Spouse)', 'Incluído (Pastor e Cônjuge)'); ?></td>
+                                <td class="py-4 px-4 text-gray-400">○ <?php echo __t('Acceso preferencial en jornadas', 'Preferential access in drives', 'Acesso preferencial em campanhas'); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4 font-bold text-gray-300"><?php echo __t('Asesoría Jurídica y Adecuación de Estatutos', 'Legal Advice & Bylaws Adaptation', 'Assessoria Jurídica e Estatutos'); ?></td>
+                                <td class="py-4 px-4 text-emerald-400 font-semibold">✓ <?php echo __t('Respaldo legal y de actas continuado', 'Ongoing legal and corporate backing', 'Respaldo jurídico contínuo'); ?></td>
+                                <td class="py-4 px-4 text-gray-400">○ <?php echo __t('Cobertura institucional temporal', 'Interim institutional covering', 'Cobertura institucional temporária'); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4 font-bold text-gray-300"><?php echo __t('Capacitaciones y Escuela de Liderazgo', 'Training & Leadership School', 'Capacitações e Escola de Líderes'); ?></td>
+                                <td class="py-4 px-4 text-emerald-400 font-semibold">✓ <?php echo __t('Becas y aranceles especiales', 'Scholarships & special rates', 'Bolsas e taxas especiais'); ?></td>
+                                <td class="py-4 px-4 text-emerald-400 font-semibold">✓ <?php echo __t('Discipulado y talleres de red', 'Discipleship & network workshops', 'Discipulado e oficinas'); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4 font-bold text-gray-300"><?php echo __t('Credencial Pastoral Oficial FENAV', 'Official FENAV Pastoral Credential', 'Credencial Pastoral Oficial FENAV'); ?></td>
+                                <td class="py-4 px-4 text-emerald-400 font-semibold">✓ <?php echo __t('Credencial de Ministro Federado', 'Federated Minister Credential', 'Credencial de Ministro Federado'); ?></td>
+                                <td class="py-4 px-4 text-cyan-400 font-semibold">✓ <?php echo __t('Acreditación de Obrero / Misionero', 'Worker / Missionary Endorsement', 'Credenciamento de Obreiro / Missionário'); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4 font-bold text-gray-300"><?php echo __t('Paternidad Espiritual & Tutela Directa', 'Spiritual Fatherhood & Tutelage', 'Paternidade Espiritual & Tutela'); ?></td>
+                                <td class="py-4 px-4 text-gray-400"><?php echo __t('Comunión y fraternidad autónoma', 'Autonomous fellowship', 'Comunhão fraternal autônoma'); ?></td>
+                                <td class="py-4 px-4 text-cyan-400 font-semibold">✓ <?php echo __t('Paternidad apostólica y tutela cercana', 'Apostolic fatherhood & close mentoring', 'Paternidade apostólica e mentoria'); ?></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-4 font-bold text-gray-300"><?php echo __t('Personalidad Jurídica Previa Requerida', 'Prior Legal Entity Required', 'Personalidade Jurídica Prévia Exigida'); ?></td>
+                                <td class="py-4 px-4 text-yellow-400 font-semibold"><?php echo __t('Sí (RIF y acta constitutiva)', 'Yes (Tax ID and constitution)', 'Sim (RIF e ata constitutiva)'); ?></td>
+                                <td class="py-4 px-4 text-emerald-400 font-semibold"><?php echo __t('No indispensable inicialmente', 'Not initially required', 'Não obrigatória inicialmente'); ?></td>
+                            </tr>
+                            <tr class="bg-zinc-950/80">
+                                <td class="py-5 px-4 font-bold text-white"><?php echo __t('Postulación Directa', 'Direct Application', 'Candidatura Direta'); ?></td>
+                                <td class="py-5 px-4">
+                                    <button type="button" onclick="openAfiliacionModal('afiliada')" class="bg-primary hover:bg-yellow-500 text-dark font-extrabold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all">
+                                        <?php echo __t('Postular Afiliada', 'Apply Affiliated', 'Candidatar Filiada'); ?>
+                                    </button>
+                                </td>
+                                <td class="py-5 px-4">
+                                    <button type="button" onclick="openAfiliacionModal('hija')" class="bg-cyan-500 hover:bg-cyan-400 text-dark font-extrabold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all">
+                                        <?php echo __t('Solicitar Cobertura', 'Request Covering', 'Solicitar Cobertura'); ?>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <!-- PESTAÑA 4: PAGO MÓVIL & MEMBRESÍA MENSUAL -->
+            <div id="tab-pagos" class="afiliacion-tab-pane transition-opacity duration-300 hidden">
+                <div class="bg-zinc-900/90 border border-primary/30 rounded-3xl p-6 md:p-12 shadow-2xl backdrop-blur-xl">
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        
+                        <!-- Columna Izquierda: Ficha Bancaria de Pago Móvil -->
+                        <div class="lg:col-span-7 space-y-6">
+                            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-800 text-xs font-black uppercase tracking-wider">
+                                💳 <?php echo __t('Canal Activo de Pago', 'Active Payment Channel', 'Canal Ativo de Pagamento'); ?>
+                            </div>
+                            
+                            <h3 class="text-2xl md:text-4xl font-extrabold text-white">
+                                <?php echo __t('Datos para Membresía por Pago Móvil', 'Pago Móvil Details for Membership', 'Dados de Pago Móvil para Mensalidade'); ?>
+                            </h3>
+
+                            <p class="text-gray-300 text-sm leading-relaxed">
+                                <?php echo __t(
+                                    'Las iglesias afiliadas pueden realizar su aporte mensual utilizando los datos oficiales de Pago Móvil de FENAV. Por favor indica en el concepto el nombre de tu congregación para su rápida conciliación.',
+                                    'Affiliated churches can make their monthly contribution using FENAV official Pago Móvil coordinates. Please specify your church name in the reference for prompt reconciliation.',
+                                    'As igrejas filiadas podem efetuar sua contribuição mensal utilizando os dados oficiais de Pago Móvil da FENAV. Especifique o nome da sua congregação no conceito.'
+                                ); ?>
+                            </p>
+
+                            <!-- Tarjeta de Datos Bancarios estilo Card Financiera -->
+                            <div class="bg-gradient-to-br from-zinc-950 via-zinc-900 to-black p-6 md:p-8 rounded-2xl border border-primary/40 shadow-xl relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+                                
+                                <div class="flex items-center justify-between pb-4 border-b border-zinc-800 mb-6">
+                                    <span class="text-primary font-black text-xs uppercase tracking-widest">FENAV • TESORERÍA NACIONAL</span>
+                                    <span class="text-gray-400 text-xs font-mono">PAGO MÓVIL VENEZUELA</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs md:text-sm">
+                                    <div class="bg-zinc-900/80 p-3.5 rounded-xl border border-zinc-800">
+                                        <span class="text-gray-400 block text-[11px] mb-0.5"><?php echo __t('Banco Destino:', 'Bank:', 'Banco:'); ?></span>
+                                        <span id="pm-banco" class="text-white font-bold text-sm md:text-base"><?php echo esc_html($pagos_config['pago_movil']['banco']); ?></span>
+                                    </div>
+                                    <div class="bg-zinc-900/80 p-3.5 rounded-xl border border-zinc-800">
+                                        <span class="text-gray-400 block text-[11px] mb-0.5"><?php echo __t('Teléfono Asociado:', 'Phone Number:', 'Telefone:'); ?></span>
+                                        <span id="pm-telefono" class="text-primary font-bold text-sm md:text-base font-mono"><?php echo esc_html($pagos_config['pago_movil']['telefono']); ?></span>
+                                    </div>
+                                    <div class="bg-zinc-900/80 p-3.5 rounded-xl border border-zinc-800">
+                                        <span class="text-gray-400 block text-[11px] mb-0.5"><?php echo __t('RIF / Documento:', 'Tax ID (RIF):', 'RIF / Documento:'); ?></span>
+                                        <span id="pm-rif" class="text-white font-bold text-sm md:text-base font-mono"><?php echo esc_html($pagos_config['pago_movil']['rif']); ?></span>
+                                    </div>
+                                    <div class="bg-zinc-900/80 p-3.5 rounded-xl border border-zinc-800">
+                                        <span class="text-gray-400 block text-[11px] mb-0.5"><?php echo __t('Beneficiario:', 'Beneficiary:', 'Favorecido:'); ?></span>
+                                        <span class="text-white font-bold text-xs truncate block"><?php echo esc_html($pagos_config['pago_movil']['titular']); ?></span>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 pt-3 border-t border-zinc-800 text-[11px] text-gray-400">
+                                    <span class="text-primary font-bold"><?php echo __t('Concepto Sugerido:', 'Suggested Concept:', 'Conceito Sugerido:'); ?></span> 
+                                    <span class="font-mono text-gray-300"><?php echo esc_html($pagos_config['pago_movil']['concepto_sugerido']); ?></span>
+                                </div>
+                            </div>
+
+                            <!-- Botones de Acción para Pago Móvil -->
+                            <div class="flex flex-wrap items-center gap-3">
+                                <button type="button" id="btn-copiar-datos-pm" onclick="copiarDatosPagoMovil()" class="bg-zinc-800 hover:bg-zinc-700 text-gray-200 hover:text-white font-bold py-3 px-5 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center gap-2 border border-zinc-700">
+                                    <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+                                    <span id="texto-btn-copiar"><?php echo __t('Copiar Datos', 'Copy Info', 'Copiar Dados'); ?></span>
+                                </button>
+                                
+                                <button type="button" onclick="openAfiliacionModal('pago')" class="bg-gradient-to-r from-primary to-yellow-600 text-dark font-extrabold py-3 px-6 rounded-xl text-xs uppercase tracking-wider shadow-lg hover:shadow-primary/30 transition-all">
+                                    <?php echo __t('Reportar Pago en Formulario', 'Report Payment in Form', 'Informar Pagamento'); ?> &rarr;
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <!-- Columna Derecha: Próxima Pasarela de Pagos & Instrucciones -->
+                        <div class="lg:col-span-5 space-y-6">
+                            
+                            <!-- Banner: Pasarela Digital Próximamente -->
+                            <div class="bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 p-6 md:p-8 rounded-2xl border border-primary/20 relative overflow-hidden">
+                                <div class="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary text-xl mb-4">
+                                    ⚡
+                                </div>
+                                <span class="px-2.5 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/40 text-[10px] font-black uppercase tracking-wider block w-fit mb-3">
+                                    <?php echo __t('Próxima Fase Tecnológica', 'Upcoming Tech Phase', 'Próxima Fase Tecnológica'); ?>
+                                </span>
+                                <h4 class="text-lg md:text-xl font-extrabold text-white mb-2">
+                                    <?php echo __t('Pasarela de Pagos Automatizada', 'Automated Payment Gateway', 'Gateway de Pagamento Automatizado'); ?>
+                                </h4>
+                                <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                                    <?php echo esc_html($pagos_config['pasarela']['mensaje_proximamente']); ?>
+                                </p>
+                                <div class="flex items-center gap-3 opacity-60">
+                                    <span class="px-2.5 py-1 bg-zinc-800 rounded text-[11px] font-mono text-gray-300">VISA</span>
+                                    <span class="px-2.5 py-1 bg-zinc-800 rounded text-[11px] font-mono text-gray-300">Mastercard</span>
+                                    <span class="px-2.5 py-1 bg-zinc-800 rounded text-[11px] font-mono text-gray-300">Débito Maestro</span>
+                                    <span class="px-2.5 py-1 bg-zinc-800 rounded text-[11px] font-mono text-gray-300">Biopago</span>
+                                </div>
+                            </div>
+
+                            <!-- Respaldo de Tesorería -->
+                            <div class="p-5 rounded-2xl bg-zinc-950/80 border border-zinc-800 text-xs text-gray-400 space-y-2">
+                                <div class="flex items-center gap-2 text-white font-bold">
+                                    <span>🛡️</span>
+                                    <span><?php echo __t('Seguridad y Emisión de Solvencias', 'Security & Clearances', 'Segurança & Certidões'); ?></span>
+                                </div>
+                                <p>
+                                    <?php echo __t(
+                                        'Una vez validada la referencia de Pago Móvil, la Dirección de Finanzas FENAV emite el comprobante digital de solvencia ministerial válido para los convenios de salud y asesoría jurídica.',
+                                        'Once the Pago Móvil reference is verified, the FENAV Finance Directorate issues the digital ministerial clearance certificate valid for health and legal benefits.',
+                                        'Validada a referência do Pago Móvil, a Diretoria Financeira da FENAV emite a certidão digital de quitação ministerial válida para saúde e assessoria.'
+                                    ); ?>
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
 
         </div>
+
     </div>
 </section>
+
+<!-- 5. MODAL INTERACTIVO: SOLICITUD DE AFILIACIÓN / COBERTURA Y REPORTE DE PAGO -->
+<div id="afiliacion-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden transition-opacity duration-300">
+    <div class="bg-zinc-950 border border-primary/40 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl p-6 md:p-8 relative text-white">
+        
+        <!-- Botón Cerrar -->
+        <button type="button" onclick="closeAfiliacionModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-zinc-900 border border-zinc-700 text-gray-400 hover:text-white hover:border-primary flex items-center justify-center transition-colors">
+            ✕
+        </button>
+
+        <div class="mb-6">
+            <span class="text-primary font-bold text-xs uppercase tracking-widest block mb-1">
+                <?php echo __t('Formulario Oficial FENAV', 'Official FENAV Form', 'Formulário Oficial FENAV'); ?>
+            </span>
+            <h3 id="modal-form-title" class="text-2xl font-extrabold text-white">
+                <?php echo __t('Solicitud de Incorporación', 'Incorporation Request', 'Solicitação de Incorporação'); ?>
+            </h3>
+            <p class="text-gray-400 text-xs mt-1">
+                <?php echo __t('Completa los campos a continuación para canalizar tu solicitud con la Secretaría Nacional.', 'Complete the fields below to forward your request to the National Secretariat.', 'Preencha os campos abaixo para encaminhar sua solicitação à Secretaria Nacional.'); ?>
+            </p>
+        </div>
+
+        <!-- Formulario -->
+        <form id="afiliacion-form" onsubmit="handleAfiliacionSubmit(event)" class="space-y-4">
+            
+            <!-- Selector de Tipo de Trámite -->
+            <div>
+                <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">
+                    <?php echo __t('Tipo de Trámite:', 'Procedure Type:', 'Tipo de Trâmite:'); ?>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-primary cursor-pointer text-xs">
+                        <input type="radio" name="tramite_tipo" value="afiliada" checked onchange="updateModalFormFields(this.value)" class="text-primary focus:ring-primary">
+                        <span class="font-bold text-white"><?php echo __t('Iglesia Afiliada', 'Affiliated Church', 'Igreja Filiada'); ?></span>
+                    </label>
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-cyan-400 cursor-pointer text-xs">
+                        <input type="radio" name="tramite_tipo" value="hija" onchange="updateModalFormFields(this.value)" class="text-cyan-400 focus:ring-cyan-400">
+                        <span class="font-bold text-white"><?php echo __t('Iglesia Hija', 'Daughter Church', 'Igreja Filha'); ?></span>
+                    </label>
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 hover:border-emerald-400 cursor-pointer text-xs">
+                        <input type="radio" name="tramite_tipo" value="pago" onchange="updateModalFormFields(this.value)" class="text-emerald-400 focus:ring-emerald-400">
+                        <span class="font-bold text-white"><?php echo __t('Reportar Pago', 'Report Payment', 'Informar Pago'); ?></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Datos Generales -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">
+                        <?php echo __t('Nombre de la Congregación *', 'Congregation Name *', 'Nome da Congregação *'); ?>
+                    </label>
+                    <input type="text" id="form-iglesia-nombre" required placeholder="<?php echo esc_attr(__t('Ej: Iglesia Monte Sión', 'E.g., Mount Zion Church', 'Ex: Igreja Monte Sião')); ?>" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-xs focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">
+                        <?php echo __t('Pastor(es) Principal(es) *', 'Lead Pastor(s) *', 'Pastor(es) Titular(es) *'); ?>
+                    </label>
+                    <input type="text" id="form-pastores" required placeholder="<?php echo esc_attr(__t('Ej: Ps. Juan Pérez y María Pérez', 'E.g., Ps. John Doe', 'Ex: Pr. João Silva')); ?>" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-xs focus:outline-none focus:border-primary">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">
+                        <?php echo __t('Teléfono / WhatsApp *', 'Phone / WhatsApp *', 'Telefone / WhatsApp *'); ?>
+                    </label>
+                    <input type="tel" id="form-telefono" required placeholder="+58 414 000 0000" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-xs focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">
+                        <?php echo __t('Estado y Ciudad *', 'State and City *', 'Estado e Cidade *'); ?>
+                    </label>
+                    <input type="text" id="form-ubicacion" required placeholder="<?php echo esc_attr(__t('Ej: Barquisimeto, Edo. Lara', 'E.g., Barquisimeto, Lara', 'Ex: Barquisimeto, Lara')); ?>" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-xs focus:outline-none focus:border-primary">
+                </div>
+            </div>
+
+            <!-- Campos Condicionales de Pago Móvil (Solo visible si tramite_tipo === 'pago') -->
+            <div id="campos-reporte-pago" class="hidden p-4 rounded-xl bg-zinc-900/90 border border-emerald-500/40 space-y-3">
+                <span class="text-xs font-bold text-emerald-400 block uppercase">
+                    <?php echo __t('Datos del Pago Móvil Realizado', 'Pago Móvil Transaction Data', 'Dados da Transação Pago Móvil'); ?>
+                </span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-300 mb-1"><?php echo __t('Número de Referencia (Últimos 6 dígitos) *', 'Reference Number *', 'Número de Referência *'); ?></label>
+                        <input type="text" id="form-referencia" placeholder="123456" class="w-full px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-white text-xs focus:outline-none focus:border-emerald-400 font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-gray-300 mb-1"><?php echo __t('Banco Emisor *', 'Sender Bank *', 'Banco Emissor *'); ?></label>
+                        <input type="text" id="form-banco-emisor" placeholder="<?php echo esc_attr(__t('Ej: Banesco, Mercantil, BDV', 'E.g., Banesco', 'Ex: Banesco')); ?>" class="w-full px-3 py-2 rounded-lg bg-zinc-950 border border-zinc-800 text-white text-xs focus:outline-none focus:border-emerald-400">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mensaje o Comentarios -->
+            <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1">
+                    <?php echo __t('Mensaje o Información Adicional', 'Message or Additional Info', 'Mensagem ou Informações'); ?>
+                </label>
+                <textarea id="form-mensaje" rows="2" placeholder="<?php echo esc_attr(__t('Indica detalles de la congregación, miembros activos o notas sobre el trámite...', 'Details about members or notes...', 'Detalhes da congregação...')); ?>" class="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-xs focus:outline-none focus:border-primary"></textarea>
+            </div>
+
+            <!-- Botones de Envío -->
+            <div class="pt-4 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-end gap-3">
+                <button type="button" onclick="closeAfiliacionModal()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-gray-300 text-xs font-bold uppercase transition-colors">
+                    <?php echo __t('Cancelar', 'Cancel', 'Cancelar'); ?>
+                </button>
+                <button type="submit" class="w-full sm:w-auto px-7 py-3 rounded-xl bg-gradient-to-r from-primary to-yellow-600 text-dark font-extrabold text-xs uppercase tracking-wider shadow-lg hover:shadow-primary/30 transition-all flex items-center justify-center gap-2">
+                    <span><?php echo __t('Enviar por WhatsApp Oficial', 'Send via Official WhatsApp', 'Enviar via WhatsApp Oficial'); ?></span>
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
 
 <!-- SCRIPT INTERACTIVO DEL MAPA Y FILTRADO (ESTILO MANNA CHURCH) -->
 <script>
@@ -876,6 +1456,139 @@ document.addEventListener('DOMContentLoaded', function () {
         if (mapSection) {
             mapSection.scrollIntoView({ behavior: 'smooth' });
         }
+    };
+
+    // --- LÓGICA DE PESTAÑAS DE AFILIACIÓN & COBERTURA ---
+    const tabBtns = document.querySelectorAll('.afiliacion-tab-btn');
+    const tabPanes = document.querySelectorAll('.afiliacion-tab-pane');
+
+    window.switchAfiliacionTab = function(tabId) {
+        tabBtns.forEach(btn => {
+            const isMatch = btn.dataset.tab === tabId;
+            if (isMatch) {
+                btn.classList.add('active', 'bg-gradient-to-r', 'from-primary', 'to-yellow-500', 'text-dark', 'shadow-[0_0_20px_rgba(212,175,55,0.4)]');
+                btn.classList.remove('bg-zinc-900', 'border', 'border-zinc-800', 'text-gray-300');
+            } else {
+                btn.classList.remove('active', 'bg-gradient-to-r', 'from-primary', 'to-yellow-500', 'text-dark', 'shadow-[0_0_20px_rgba(212,175,55,0.4)]');
+                btn.classList.add('bg-zinc-900', 'border', 'border-zinc-800', 'text-gray-300');
+            }
+        });
+
+        tabPanes.forEach(pane => {
+            if (pane.id === tabId) {
+                pane.classList.remove('hidden');
+                pane.classList.add('block');
+            } else {
+                pane.classList.add('hidden');
+                pane.classList.remove('block');
+            }
+        });
+    };
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            switchAfiliacionTab(this.dataset.tab);
+        });
+    });
+
+    // --- COPIAR DATOS DE PAGO MÓVIL AL PORTAPAPELES ---
+    window.copiarDatosPagoMovil = function() {
+        const banco = document.getElementById('pm-banco')?.textContent?.trim() || '';
+        const telefono = document.getElementById('pm-telefono')?.textContent?.trim() || '';
+        const rif = document.getElementById('pm-rif')?.textContent?.trim() || '';
+        const texto = `FENAV - Pago Móvil\nBanco: ${banco}\nTeléfono: ${telefono}\nRIF: ${rif}\nConcepto: Membresía FENAV`;
+
+        navigator.clipboard.writeText(texto).then(() => {
+            const label = document.getElementById('texto-btn-copiar');
+            if (label) {
+                const original = label.textContent;
+                label.textContent = '¡Copiado con Éxito!';
+                setTimeout(() => {
+                    label.textContent = original;
+                }, 2500);
+            }
+        }).catch(err => {
+            alert('Datos de Pago Móvil:\n' + texto);
+        });
+    };
+
+    // --- MODAL INTERACTIVO DE AFILIACIÓN Y REPORTE ---
+    const modal = document.getElementById('afiliacion-modal');
+    const modalTitle = document.getElementById('modal-form-title');
+    const camposPago = document.getElementById('campos-reporte-pago');
+
+    window.openAfiliacionModal = function(tipo) {
+        if (!modal) return;
+        modal.classList.remove('hidden');
+        
+        const radio = document.querySelector(`input[name="tramite_tipo"][value="${tipo}"]`);
+        if (radio) {
+            radio.checked = true;
+            updateModalFormFields(tipo);
+        }
+    };
+
+    window.closeAfiliacionModal = function() {
+        if (modal) modal.classList.add('hidden');
+    };
+
+    // Cerrar al hacer clic fuera
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeAfiliacionModal();
+        });
+    }
+
+    window.updateModalFormFields = function(tipo) {
+        if (tipo === 'pago') {
+            if (modalTitle) modalTitle.textContent = '<?php echo esc_js(__t("Reporte de Pago de Membresía", "Membership Payment Report", "Relatório de Mensalidade")); ?>';
+            if (camposPago) camposPago.classList.remove('hidden');
+        } else if (tipo === 'hija') {
+            if (modalTitle) modalTitle.textContent = '<?php echo esc_js(__t("Solicitud de Cobertura Espiritual", "Spiritual Covering Request", "Solicitação de Cobertura")); ?>';
+            if (camposPago) camposPago.classList.add('hidden');
+        } else {
+            if (modalTitle) modalTitle.textContent = '<?php echo esc_js(__t("Postulación de Iglesia Afiliada", "Affiliated Church Application", "Candidatura de Igreja Filiada")); ?>';
+            if (camposPago) camposPago.classList.add('hidden');
+        }
+    };
+
+    window.handleAfiliacionSubmit = function(e) {
+        e.preventDefault();
+        const tipoRadio = document.querySelector('input[name="tramite_tipo"]:checked');
+        const tipoVal = tipoRadio ? tipoRadio.value : 'afiliada';
+        const nombre = document.getElementById('form-iglesia-nombre')?.value || '';
+        const pastores = document.getElementById('form-pastores')?.value || '';
+        const telefono = document.getElementById('form-telefono')?.value || '';
+        const ubicacion = document.getElementById('form-ubicacion')?.value || '';
+        const referencia = document.getElementById('form-referencia')?.value || '';
+        const bancoEmisor = document.getElementById('form-banco-emisor')?.value || '';
+        const mensaje = document.getElementById('form-mensaje')?.value || '';
+
+        let tipoTexto = 'Postulación Iglesia Afiliada (Membresía)';
+        if (tipoVal === 'hija') tipoTexto = 'Solicitud Iglesia Hija (Bajo Cobertura)';
+        if (tipoVal === 'pago') tipoTexto = 'Reporte de Pago Móvil de Membresía';
+
+        let msg = `*FENAV - ${tipoTexto}*\n\n`;
+        msg += `⛪ *Iglesia:* ${nombre}\n`;
+        msg += `👤 *Pastor(es):* ${pastores}\n`;
+        msg += `📍 *Ubicación:* ${ubicacion}\n`;
+        msg += `📱 *Contacto:* ${telefono}\n`;
+
+        if (tipoVal === 'pago') {
+            msg += `\n💳 *DATOS DE PAGO MÓVIL:*\n`;
+            msg += `• Ref: ${referencia}\n`;
+            msg += `• Banco Emisor: ${bancoEmisor}\n`;
+        }
+
+        if (mensaje) {
+            msg += `\n📝 *Detalles:* ${mensaje}\n`;
+        }
+
+        const waNumber = '<?php echo esc_js($pagos_config["pago_movil"]["whatsapp_reporte"]); ?>';
+        const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+        
+        window.open(waUrl, '_blank');
+        closeAfiliacionModal();
     };
 });
 </script>

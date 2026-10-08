@@ -7,6 +7,9 @@ if (is_file(__DIR__.'/vendor/autoload_packages.php')) {
 // Cargar sistema de traducciones multilingüe (ES, EN, PT)
 require_once __DIR__ . '/inc/translations.php';
 
+// Cargar modelos de afiliación y beneficios/requisitos/pagos
+require_once __DIR__ . '/inc/modelos-afiliacion.php';
+
 function tailpress(): TailPress\Framework\Theme
 {
     return TailPress\Framework\Theme::instance()
